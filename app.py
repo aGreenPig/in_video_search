@@ -120,6 +120,26 @@ video_examples = [os.path.join(videos_folder, file)
 
 # Gradio demo UI configs and actions
 with gr.Blocks() as demo:
+    gr.HTML(
+        """
+        <div style="text-align: center; max-width: 1200px; margin: 20px auto;">
+        <h2 style="font-weight: 900; font-size: 3rem; margin: 0rem">
+        In-Video Search
+        </h2>   
+        <h2 style="text-align: left; font-weight: 450; font-size: 1rem; margin-top: 2rem; margin-bottom: 1.5rem">
+        Locate visual content (with timestamp) within a video by given text prompt.
+        <br>
+        <br>
+        Left side is Image Captioning (Image to Text) demo.
+        <br>
+        Right side is In-Video Search demo. Try with the video in the /examples folder with search prompt e.g. "pink flowers".
+        <br>
+        <br>
+        Original Github repo <u><a href="https://github.com/aGreenPig/in_video_search/" target="_blank">here</a></u>.
+        </h2>
+        </div>
+        """)
+
     with gr.Row():
         with gr.Column(scale=1):
             img1 = gr.Image(label="Image to Text/Caption", type='pil')
