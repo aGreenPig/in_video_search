@@ -9,15 +9,17 @@ import cv2
 import torch
 from transformers import AutoTokenizer, ViTFeatureExtractor, VisionEncoderDecoderModel, AutoModel
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print("using device: ", device)
 
 i2t_model_id = "nlpconnect/vit-gpt2-image-captioning"
-i2t_model = VisionEncoderDecoderModel.from_pretrained(i2t_model_id)
+i2t_model = VisionEncoderDecoderModel.from_pretrained(i2t_model_id).to(device)
 i2t_tokenizer = AutoTokenizer.from_pretrained(i2t_model_id)
 i2t_feature_extractor = ViTFeatureExtractor.from_pretrained(i2t_model_id)
 
 ss_model_id = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+ss_model = AutoModel.from_pretrained(ss_model_id).to(device)
 ss_tokenizer = AutoTokenizer.from_pretrained(ss_model_id)
-ss_model = AutoModel.from_pretrained(ss_model_id)
 
 VIDEO_SAMPLE_RATE_SECONDS = 1
 
@@ -100,7 +102,7 @@ def run_image2text(image):
     img = image.convert('RGB')
     i2t_model.eval()
     pixel_values = i2t_feature_extractor(
-        images=[img], return_tensors="pt").pixel_values
+        images=[img], return_tensors="pt").to(device).pixel_values
     with torch.no_grad():
         output_ids = i2t_model.generate(
             pixel_values, max_length=16, num_beams=4, return_dict_in_generate=True).sequences

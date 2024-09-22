@@ -4,3 +4,4 @@ torch
 transformers[torch]
 numpy
 opencv-python
+gradio
